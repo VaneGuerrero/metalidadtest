@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="en">
+<html lang="es">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Professional Mindset Reflection Tool</title>
+    <title>Herramienta de Reflexión de Mentalidad Profesional</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
@@ -23,9 +23,9 @@
   <body class="min-h-screen bg-slatebase text-slate-100">
     <main class="mx-auto max-w-4xl px-4 py-10">
       <header class="mb-8 rounded-2xl bg-slatepanel/80 p-6 shadow-lg ring-1 ring-slate-700">
-        <h1 class="text-2xl font-semibold tracking-tight sm:text-3xl">Professional Mindset Reflection Tool</h1>
+        <h1 class="text-2xl font-semibold tracking-tight sm:text-3xl">Herramienta de Reflexión de Mentalidad Profesional</h1>
         <p class="mt-3 text-sm text-graysoft sm:text-base">
-          Explore your professional decision tendencies in a neutral space. Each option reflects a valid strategy; the analysis is informational, not corrective.
+          Explora tus tendencias de decisión profesional en un espacio neutral. Cada opción refleja una estrategia válida; el análisis es informativo, no correctivo.
         </p>
       </header>
 
@@ -37,20 +37,20 @@
         <div id="optionContainer" class="mt-6 grid gap-3"></div>
 
         <div id="analysisPanel" class="mt-6 hidden rounded-xl border border-teal-700/60 bg-slate-800/70 p-4">
-          <h3 class="text-sm font-semibold uppercase tracking-wider text-teal-300">Perspective Analysis</h3>
+          <h3 class="text-sm font-semibold uppercase tracking-wider text-teal-300">Análisis de Perspectiva</h3>
           <p id="analysisText" class="mt-2 text-slate-200"></p>
           <button id="nextBtn" class="mt-4 rounded-lg bg-teal-600 px-4 py-2 font-medium text-slate-950 transition hover:bg-teal-500">
-            Next Scenario
+            Siguiente escenario
           </button>
         </div>
       </section>
 
       <section id="summaryCard" class="mt-8 hidden rounded-2xl bg-slatepanel/90 p-6 shadow-xl ring-1 ring-slate-700">
-        <h2 class="text-2xl font-semibold">Mindset Profile</h2>
+        <h2 class="text-2xl font-semibold">Perfil de Mentalidad</h2>
         <p id="summaryText" class="mt-3 leading-relaxed text-slate-200"></p>
         <div id="themeBullets" class="mt-4 space-y-2 text-slate-300"></div>
         <button id="restartBtn" class="mt-6 rounded-lg bg-teal-600 px-4 py-2 font-medium text-slate-950 transition hover:bg-teal-500">
-          Reflect Again
+          Reflexionar de nuevo
         </button>
       </section>
     </main>
@@ -247,7 +247,7 @@
 
       function renderScenario() {
         const current = scenarios[currentIndex];
-        stepLabel.textContent = `Scenario ${currentIndex + 1} of ${scenarios.length}`;
+        stepLabel.textContent = `Escenario ${currentIndex + 1} de ${scenarios.length}`;
         scenarioTitle.textContent = current.title;
         scenarioText.textContent = current.prompt;
         optionContainer.innerHTML = "";
@@ -282,21 +282,21 @@
         let profile = "";
 
         if (stability > growth + 1) {
-          profile = "You currently prioritize operational stability, trusted expertise, and risk-managed execution. This can be highly effective in environments where reliability and stakeholder confidence are central.";
-          themes.push("You appear to value predictability, governance, and the protection of proven systems.");
-          themes.push("Your reflection suggests a strong commitment to preserving delivery quality under uncertainty.");
+          profile = "Actualmente priorizas la estabilidad operativa, la experiencia consolidada y una ejecución con riesgo controlado. Esto puede ser muy efectivo en contextos donde la confiabilidad y la confianza de los stakeholders son centrales.";
+          themes.push("Parece que valoras la previsibilidad, la gobernanza y la protección de sistemas probados.");
+          themes.push("Tu reflexión sugiere un compromiso sólido con mantener la calidad de entrega bajo incertidumbre.");
         } else if (growth > stability + 1) {
-          profile = "You are in a phase of growth exploration, favoring adaptive learning and long-horizon evolution. This orientation can unlock new capabilities when conditions reward experimentation.";
-          themes.push("You appear comfortable with temporary ambiguity in service of broader capability development.");
-          themes.push("Your reflection suggests you use setbacks as information rather than identity threats.");
+          profile = "Estás en una fase de exploración de crecimiento, favoreciendo el aprendizaje adaptativo y la evolución de largo plazo. Esta orientación puede abrir nuevas capacidades cuando el contexto premia la experimentación.";
+          themes.push("Pareces sentirte cómodo/a con la ambigüedad temporal para impulsar un desarrollo de capacidades más amplio.");
+          themes.push("Tu reflexión sugiere que usas los tropiezos como información, no como amenazas a tu identidad profesional.");
         } else {
-          profile = "You currently show a balanced posture between stability and evolution, toggling between reliability and experimentation based on context.";
-          themes.push("You appear to calibrate decisions by both immediate operational demands and future adaptability.");
-          themes.push("Your reflection suggests situational flexibility rather than a fixed professional stance.");
+          profile = "Actualmente muestras una postura equilibrada entre estabilidad y evolución, alternando entre confiabilidad y experimentación según el contexto.";
+          themes.push("Parece que calibras tus decisiones considerando tanto las demandas operativas inmediatas como la adaptabilidad futura.");
+          themes.push("Tu reflexión sugiere flexibilidad situacional en lugar de una postura profesional rígida.");
         }
 
         if (blended >= 2) {
-          themes.push("You repeatedly selected hybrid pathways, indicating preference for staged change and controlled experimentation.");
+          themes.push("Seleccionaste repetidamente rutas híbridas, lo que indica preferencia por cambios por etapas y experimentación controlada.");
         }
 
         summaryText.textContent = profile;
