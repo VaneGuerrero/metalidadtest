@@ -47,8 +47,17 @@
 
       <section id="summaryCard" class="mt-8 hidden rounded-2xl bg-slatepanel/90 p-6 shadow-xl ring-1 ring-slate-700">
         <h2 class="text-2xl font-semibold">Perfil de Mentalidad</h2>
+        <p id="mindsetCategory" class="mt-2 text-sm font-semibold uppercase tracking-wider text-teal-300"></p>
         <p id="summaryText" class="mt-3 leading-relaxed text-slate-200"></p>
+        <div class="mt-5 rounded-xl border border-slate-700 bg-slate-800/60 p-4">
+          <h3 class="text-sm font-semibold uppercase tracking-wider text-teal-300">Gráfico de rasgos de mentalidad</h3>
+          <canvas id="mindsetChart" class="mt-3 h-48 w-full"></canvas>
+        </div>
         <div id="themeBullets" class="mt-4 space-y-2 text-slate-300"></div>
+        <div class="mt-6 rounded-xl border border-slate-700 bg-slate-800/60 p-4">
+          <h3 class="text-sm font-semibold uppercase tracking-wider text-teal-300">Consejos para trabajar debilidades</h3>
+          <div id="adviceBullets" class="mt-2 space-y-2 text-slate-300"></div>
+        </div>
         <button id="restartBtn" class="mt-6 rounded-lg bg-teal-600 px-4 py-2 font-medium text-slate-950 transition hover:bg-teal-500">
           Reflexionar de nuevo
         </button>
@@ -237,8 +246,11 @@
       const analysisText = document.getElementById("analysisText");
       const nextBtn = document.getElementById("nextBtn");
       const summaryCard = document.getElementById("summaryCard");
+      const mindsetCategory = document.getElementById("mindsetCategory");
       const summaryText = document.getElementById("summaryText");
       const themeBullets = document.getElementById("themeBullets");
+      const adviceBullets = document.getElementById("adviceBullets");
+      const mindsetChart = document.getElementById("mindsetChart");
       const restartBtn = document.getElementById("restartBtn");
       const card = document.getElementById("card");
 
@@ -279,32 +291,96 @@
         const blended = selectedTrends.filter((v) => v === "blended").length;
 
         const themes = [];
+        const advice = [];
         let profile = "";
+        let category = "";
 
         if (stability > growth + 1) {
+          category = "Mindset predominante: Estabilidad estratégica";
           profile = "Actualmente priorizas la estabilidad operativa, la experiencia consolidada y una ejecución con riesgo controlado. Esto puede ser muy efectivo en contextos donde la confiabilidad y la confianza de los stakeholders son centrales.";
           themes.push("Parece que valoras la previsibilidad, la gobernanza y la protección de sistemas probados.");
           themes.push("Tu reflexión sugiere un compromiso sólido con mantener la calidad de entrega bajo incertidumbre.");
+          advice.push("Programa 1 experimento pequeño por trimestre con métricas claras para fortalecer tu flexibilidad.");
+          advice.push("En retrospectivas, agrega una pregunta fija: “¿Qué supuesto no estamos cuestionando?” para abrir espacio de aprendizaje.");
+          advice.push("Busca feedback externo temprano cuando enfrentes contextos nuevos para reducir sesgos de confirmación.");
         } else if (growth > stability + 1) {
+          category = "Mindset predominante: Exploración evolutiva";
           profile = "Estás en una fase de exploración de crecimiento, favoreciendo el aprendizaje adaptativo y la evolución de largo plazo. Esta orientación puede abrir nuevas capacidades cuando el contexto premia la experimentación.";
           themes.push("Pareces sentirte cómodo/a con la ambigüedad temporal para impulsar un desarrollo de capacidades más amplio.");
           themes.push("Tu reflexión sugiere que usas los tropiezos como información, no como amenazas a tu identidad profesional.");
+          advice.push("Define límites operativos mínimos (tiempo, presupuesto y calidad) para que la experimentación no afecte compromisos críticos.");
+          advice.push("Antes de cada iniciativa, establece criterios explícitos de “continuar, ajustar o detener” para decidir con disciplina.");
+          advice.push("Combina cada apuesta innovadora con una acción de estabilización que proteja la ejecución base del equipo.");
         } else {
+          category = "Mindset predominante: Equilibrio adaptativo";
           profile = "Actualmente muestras una postura equilibrada entre estabilidad y evolución, alternando entre confiabilidad y experimentación según el contexto.";
           themes.push("Parece que calibras tus decisiones considerando tanto las demandas operativas inmediatas como la adaptabilidad futura.");
           themes.push("Tu reflexión sugiere flexibilidad situacional en lugar de una postura profesional rígida.");
+          advice.push("Prioriza por impacto: identifica en qué frentes conviene acelerar aprendizaje y en cuáles conviene reforzar control.");
+          advice.push("Evita la ambigüedad excesiva documentando por qué elegiste estabilidad o exploración en decisiones clave.");
+          advice.push("Mide tu balance mensualmente para asegurar que el equilibrio no se convierta en indecisión.");
         }
 
         if (blended >= 2) {
           themes.push("Seleccionaste repetidamente rutas híbridas, lo que indica preferencia por cambios por etapas y experimentación controlada.");
+          advice.push("Mantén tus pilotos híbridos con hitos públicos para sostener transparencia y aprendizaje compartido.");
         }
 
+        mindsetCategory.textContent = category;
         summaryText.textContent = profile;
         themeBullets.innerHTML = "";
         themes.forEach((item) => {
           const p = document.createElement("p");
           p.textContent = `• ${item}`;
           themeBullets.appendChild(p);
+        });
+
+        adviceBullets.innerHTML = "";
+        advice.forEach((item) => {
+          const p = document.createElement("p");
+          p.textContent = `• ${item}`;
+          adviceBullets.appendChild(p);
+        });
+
+        renderMindsetChart({ stability, growth, blended });
+      }
+
+      function renderMindsetChart({ stability, growth, blended }) {
+        const ctx = mindsetChart.getContext("2d");
+        const total = scenarios.length || 1;
+        const ratio = (value) => value / total;
+        const values = [
+          { label: "Estabilidad", value: stability, color: "#38bdf8" },
+          { label: "Evolución", value: growth, color: "#14b8a6" },
+          { label: "Híbrido", value: blended, color: "#c4b5fd" }
+        ];
+
+        const cssWidth = mindsetChart.clientWidth || 600;
+        const cssHeight = 220;
+        const dpr = window.devicePixelRatio || 1;
+        mindsetChart.width = Math.floor(cssWidth * dpr);
+        mindsetChart.height = Math.floor(cssHeight * dpr);
+        ctx.scale(dpr, dpr);
+        ctx.clearRect(0, 0, cssWidth, cssHeight);
+
+        ctx.fillStyle = "#e2e8f0";
+        ctx.font = "13px sans-serif";
+
+        values.forEach((item, index) => {
+          const top = 20 + index * 62;
+          const barX = 120;
+          const barWidth = cssWidth - 150;
+          const barHeight = 18;
+          const fillWidth = Math.max(2, Math.round(barWidth * ratio(item.value)));
+
+          ctx.fillStyle = "#334155";
+          ctx.fillRect(barX, top, barWidth, barHeight);
+          ctx.fillStyle = item.color;
+          ctx.fillRect(barX, top, fillWidth, barHeight);
+
+          ctx.fillStyle = "#e2e8f0";
+          ctx.fillText(item.label, 12, top + 14);
+          ctx.fillText(`${item.value}/${total} (${Math.round(ratio(item.value) * 100)}%)`, barX, top + 40);
         });
       }
 
