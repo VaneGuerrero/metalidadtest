@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Herramienta de Reflexión de Mentalidad Profesional</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              slatebase: "#0f172a",
+              slatepanel: "#1e293b",
+              tealsoft: "#14b8a6",
+              graysoft: "#94a3b8"
+            }
+          }
+        }
+      };
+    </script>
+  </head>
+  <body class="min-h-screen bg-slatebase text-slate-100">
+    <main class="mx-auto max-w-4xl px-4 py-10">
+      <header class="mb-8 rounded-2xl bg-slatepanel/80 p-6 shadow-lg ring-1 ring-slate-700">
+        <h1 class="text-2xl font-semibold tracking-tight sm:text-3xl">Herramienta de Reflexión de Mentalidad Profesional</h1>
+        <p class="mt-3 text-sm text-graysoft sm:text-base">
+          Explora tus tendencias de decisión profesional en un espacio neutral. Cada opción refleja una estrategia válida; el análisis es informativo, no correctivo.
+        </p>
+      </header>
+
+      <section id="card" class="rounded-2xl bg-slatepanel/90 p-6 shadow-xl ring-1 ring-slate-700">
+        <p id="stepLabel" class="text-xs font-medium uppercase tracking-[0.2em] text-teal-300"></p>
+        <h2 id="scenarioTitle" class="mt-2 text-xl font-semibold"></h2>
+        <p id="scenarioText" class="mt-3 leading-relaxed text-slate-200"></p>
+
+        <div id="optionContainer" class="mt-6 grid gap-3"></div>
+
+        <div id="analysisPanel" class="mt-6 hidden rounded-xl border border-teal-700/60 bg-slate-800/70 p-4">
+          <h3 class="text-sm font-semibold uppercase tracking-wider text-teal-300">Análisis de Perspectiva</h3>
+          <p id="analysisText" class="mt-2 text-slate-200"></p>
+          <button id="nextBtn" class="mt-4 rounded-lg bg-teal-600 px-4 py-2 font-medium text-slate-950 transition hover:bg-teal-500">
+            Siguiente escenario
+          </button>
+        </div>
+      </section>
+
+      <section id="summaryCard" class="mt-8 hidden rounded-2xl bg-slatepanel/90 p-6 shadow-xl ring-1 ring-slate-700">
+        <h2 class="text-2xl font-semibold">Perfil de Mentalidad</h2>
+        <p id="summaryText" class="mt-3 leading-relaxed text-slate-200"></p>
+        <div id="themeBullets" class="mt-4 space-y-2 text-slate-300"></div>
+        <button id="restartBtn" class="mt-6 rounded-lg bg-teal-600 px-4 py-2 font-medium text-slate-950 transition hover:bg-teal-500">
+          Reflexionar de nuevo
+        </button>
+      </section>
+    </main>
+
+    <script>
+      const scenarios = [
+        {
+          title: "Proceso heredado vs. experimento abierto",
+          prompt: "Heredas un equipo con un proceso de entrega confiable que ha dado resultados estables durante años, pero la competencia está iterando más rápido.",
+          options: [
+            {
+              text: "Conservar el proceso actual y optimizar cuellos de botella de forma incremental para proteger la calidad y la previsibilidad.",
+              stance: "stability",
+              rationale: "Esto protege la confiabilidad institucional y la confianza del cliente, al tiempo que limita la volatilidad de la ejecución. Favorece la mejora controlada sobre la experimentación disruptiva."
+            },
+            {
+              text: "Lanzar un piloto con tiempo acotado y un nuevo modelo de entrega, aceptando ineficiencias de corto plazo para aprender más rápido.",
+              stance: "growth",
+              rationale: "Este enfoque valora la capacidad de adaptación y trata las caídas temporales de desempeño como datos para la competitividad de largo plazo."
+            }
+          ]
+        },
+        {
+          title: "Decisión de visibilidad ejecutiva",
+          prompt: "Te invitan a presentar una recomendación estratégica fuera de tu dominio central frente al liderazgo senior.",
+          options: [
+            {
+              text: "Rechazar y recomendar a un especialista reconocido del área para mantener credibilidad técnica.",
+              stance: "stability",
+              rationale: "Esto preserva la precisión y la reputación al alinear la experiencia con las expectativas de la audiencia. Reduce el riesgo de sobreextensión en un entorno de alta visibilidad."
+            },
+            {
+              text: "Aceptar y presentar la exposición como una hipótesis transversal, nombrando explícitamente supuestos y brechas de aprendizaje.",
+              stance: "growth",
+              rationale: "Esto amplía el alcance estratégico y demuestra humildad intelectual. Aumenta el riesgo de exposición, pero puede acelerar la influencia interdisciplinaria."
+            }
+          ]
+        },
+        {
+          title: "Presión por metas trimestrales",
+          prompt: "Tu unidad puede asegurar la meta de este trimestre repitiendo una campaña conocida, o probar un nuevo segmento con conversión incierta.",
+          options: [
+            {
+              text: "Priorizar la campaña conocida para proteger la confiabilidad de ingresos y la confianza en la planificación.",
+              stance: "stability",
+              rationale: "Esto se alinea con la disciplina fiduciaria y la rendición de cuentas de ciclo corto. Optimiza la certeza de pronóstico y la tranquilidad de los actores clave."
+            },
+            {
+              text: "Asignar un presupuesto relevante al segmento no probado para obtener aprendizaje estratégico para próximos trimestres.",
+              stance: "growth",
+              rationale: "Esto intercambia certeza de corto plazo por descubrimiento de mercado. Trata un posible bajo rendimiento como inversión informativa en lugar de pérdida pura."
+            },
+            {
+              text: "Dividir la inversión con hitos de decisión predefinidos para preservar resultados base mientras se prueban hipótesis de expansión.",
+              stance: "blended",
+              rationale: "Esto equilibra contención de riesgo y aprendizaje adaptativo. Institucionaliza la experimentación sin abandonar los límites operativos."
+            }
+          ]
+        },
+        {
+          title: "Contratación senior o desarrollo interno",
+          prompt: "Una función crítica necesita liderazgo ahora, y puedes reclutar a un experto consolidado o designar a una persona interna de alto potencial.",
+          options: [
+            {
+              text: "Contratar al experto externo para reducir el riesgo de incorporación y estabilizar rápidamente el desempeño.",
+              stance: "stability",
+              rationale: "Esto prioriza la certeza inmediata de capacidades y protege la continuidad del negocio en periodos de alta exigencia."
+            },
+            {
+              text: "Promover a la persona interna y brindar acompañamiento, aceptando una curva de aprendizaje a cambio del desarrollo de capacidades a largo plazo.",
+              stance: "growth",
+              rationale: "Esto invierte en evolución interna y profundidad de liderazgo, reconociendo variaciones temporales en la ejecución."
+            }
+          ]
+        },
+        {
+          title: "Enfoque ante escalación de cliente",
+          prompt: "Un cliente clave reporta insatisfacción tras un incumplimiento causado por requisitos ambiguos y supuestos internos.",
+          options: [
+            {
+              text: "Enfatizar límites de alcance contractual y controles correctivos para reforzar la claridad del proceso.",
+              stance: "stability",
+              rationale: "Esto re-centra la arquitectura de responsabilidad y protege la autoridad profesional mediante una gobernanza clara del proceso."
+            },
+            {
+              text: "Reconocer el sesgo de interpretación del equipo y co-diseñar con el cliente un proceso de descubrimiento revisado.",
+              stance: "growth",
+              rationale: "Esta postura usa la vulnerabilidad para reconstruir confianza y mejorar los sistemas de colaboración futura, pese a la incomodidad reputacional de corto plazo."
+            }
+          ]
+        },
+        {
+          title: "Elección de agenda de innovación",
+          prompt: "Solo puedes patrocinar una iniciativa este año: modernizar sistemas probados o financiar prototipos exploratorios.",
+          options: [
+            {
+              text: "Modernizar sistemas centrales para mejorar resiliencia, velocidad y cumplimiento en flujos de trabajo conocidos.",
+              stance: "stability",
+              rationale: "Esto asegura el desempeño base y reduce fricciones operativas donde las rutas de valor ya están validadas."
+            },
+            {
+              text: "Financiar prototipos exploratorios que pueden fallar, pero podrían redefinir futuros modelos de servicio.",
+              stance: "growth",
+              rationale: "Esto posiciona a la organización para cambios de dirección y trata resultados inciertos como inteligencia estratégica."
+            }
+          ]
+        },
+        {
+          title: "Narrativa de evaluación de desempeño",
+          prompt: "Durante tu evaluación, te piden describir un proyecto que no cumplió las expectativas.",
+          options: [
+            {
+              text: "Destacar los riesgos que mitigaste y los resultados estables que preservaste pese a contratiempos.",
+              stance: "stability",
+              rationale: "Esto enmarca el liderazgo desde la confiabilidad bajo presión y enfatiza la gestión de compromisos existentes."
+            },
+            {
+              text: "Detallar los supuestos fallidos, lo que aprendiste y cómo esos hallazgos cambiaron tu modelo de operación.",
+              stance: "growth",
+              rationale: "Esto demuestra práctica reflexiva y adaptación, señalando liderazgo de desarrollo a largo plazo por encima de la protección de imagen."
+            }
+          ]
+        },
+        {
+          title: "Posicionamiento de expertise público",
+          prompt: "Tu red profesional espera alta certeza en comentarios públicos, pero tus datos aún están en desarrollo.",
+          options: [
+            {
+              text: "Publicar solo lo que esté totalmente validado para mantener autoridad y minimizar riesgo de interpretación.",
+              stance: "stability",
+              rationale: "Esto resguarda la credibilidad mediante disciplina de evidencia y reduce la exposición a conclusiones prematuras."
+            },
+            {
+              text: "Compartir hallazgos provisionales con límites claros de incertidumbre e invitar crítica de pares.",
+              stance: "growth",
+              rationale: "Esto acelera el aprendizaje colectivo e invita el contraste, aceptando que la apertura puede suavizar temporalmente la certeza percibida."
+            }
+          ]
+        },
+        {
+          title: "Estrategia de capacidades del equipo",
+          prompt: "Un equipo de alto desempeño se resiste a nuevas herramientas porque los métodos actuales son eficientes y familiares.",
+          options: [
+            {
+              text: "Proteger métodos existentes y enfocarse en metas de productividad ligadas a flujos de trabajo conocidos.",
+              stance: "stability",
+              rationale: "Esto preserva el ritmo y evita disrupciones de productividad donde la ejecución actual es confiable."
+            },
+            {
+              text: "Introducir ciclos estructurados de actualización de habilidades, aceptando una desaceleración temporal para aumentar la adaptabilidad futura.",
+              stance: "growth",
+              rationale: "Esto prioriza la elasticidad de aprendizaje y la preparación futura, incluso cuando los indicadores de corto plazo se debiliten."
+            },
+            {
+              text: "Implementar las herramientas primero en un subequipo, usando datos comparativos antes de una adopción amplia.",
+              stance: "blended",
+              rationale: "Esto crea rutas de transición guiadas por evidencia que respetan tanto la eficiencia actual como las necesidades de capacidad en evolución."
+            }
+          ]
+        },
+        {
+          title: "Apuesta personal de liderazgo",
+          prompt: "Puedes tomar un rol familiar con alta confianza o asumir un rol más amplio donde algunas competencias aún están en desarrollo.",
+          options: [
+            {
+              text: "Elegir el rol familiar para maximizar impacto inmediato y mantener una continuidad sólida de desempeño.",
+              stance: "stability",
+              rationale: "Esta elección favorece una contribución confiable y el refuerzo de reputación a través del dominio ya establecido."
+            },
+            {
+              text: "Tomar el rol más amplio y construir las competencias faltantes en tiempo real con apoyo de mentoría.",
+              stance: "growth",
+              rationale: "Esta elección enfatiza la expansión de trayectoria y la adquisición deliberada de habilidades, aceptando exposición a un rendimiento inicial inferior."
+            }
+          ]
+        }
+      ];
+
+      const stepLabel = document.getElementById("stepLabel");
+      const scenarioTitle = document.getElementById("scenarioTitle");
+      const scenarioText = document.getElementById("scenarioText");
+      const optionContainer = document.getElementById("optionContainer");
+      const analysisPanel = document.getElementById("analysisPanel");
+      const analysisText = document.getElementById("analysisText");
+      const nextBtn = document.getElementById("nextBtn");
+      const summaryCard = document.getElementById("summaryCard");
+      const summaryText = document.getElementById("summaryText");
+      const themeBullets = document.getElementById("themeBullets");
+      const restartBtn = document.getElementById("restartBtn");
+      const card = document.getElementById("card");
+
+      let currentIndex = 0;
+      let selectedTrends = [];
+
+      function renderScenario() {
+        const current = scenarios[currentIndex];
+        stepLabel.textContent = `Escenario ${currentIndex + 1} de ${scenarios.length}`;
+        scenarioTitle.textContent = current.title;
+        scenarioText.textContent = current.prompt;
+        optionContainer.innerHTML = "";
+        analysisPanel.classList.add("hidden");
+
+        current.options.forEach((option) => {
+          const btn = document.createElement("button");
+          btn.className =
+            "w-full rounded-xl border border-slate-600 bg-slate-800/70 p-4 text-left text-slate-100 transition hover:border-teal-400 hover:bg-slate-700/80";
+          btn.textContent = option.text;
+          btn.addEventListener("click", () => handleSelection(option));
+          optionContainer.appendChild(btn);
+        });
+      }
+
+      function handleSelection(option) {
+        selectedTrends.push(option.stance);
+        analysisText.textContent = option.rationale;
+        analysisPanel.classList.remove("hidden");
+        optionContainer.querySelectorAll("button").forEach((button) => {
+          button.disabled = true;
+          button.classList.add("opacity-60");
+        });
+      }
+
+      function generateProfile() {
+        const stability = selectedTrends.filter((v) => v === "stability").length;
+        const growth = selectedTrends.filter((v) => v === "growth").length;
+        const blended = selectedTrends.filter((v) => v === "blended").length;
+
+        const themes = [];
+        let profile = "";
+
+        if (stability > growth + 1) {
+          profile = "Actualmente priorizas la estabilidad operativa, la experiencia consolidada y una ejecución con riesgo controlado. Esto puede ser muy efectivo en contextos donde la confiabilidad y la confianza de los stakeholders son centrales.";
+          themes.push("Parece que valoras la previsibilidad, la gobernanza y la protección de sistemas probados.");
+          themes.push("Tu reflexión sugiere un compromiso sólido con mantener la calidad de entrega bajo incertidumbre.");
+        } else if (growth > stability + 1) {
+          profile = "Estás en una fase de exploración de crecimiento, favoreciendo el aprendizaje adaptativo y la evolución de largo plazo. Esta orientación puede abrir nuevas capacidades cuando el contexto premia la experimentación.";
+          themes.push("Pareces sentirte cómodo/a con la ambigüedad temporal para impulsar un desarrollo de capacidades más amplio.");
+          themes.push("Tu reflexión sugiere que usas los tropiezos como información, no como amenazas a tu identidad profesional.");
+        } else {
+          profile = "Actualmente muestras una postura equilibrada entre estabilidad y evolución, alternando entre confiabilidad y experimentación según el contexto.";
+          themes.push("Parece que calibras tus decisiones considerando tanto las demandas operativas inmediatas como la adaptabilidad futura.");
+          themes.push("Tu reflexión sugiere flexibilidad situacional en lugar de una postura profesional rígida.");
+        }
+
+        if (blended >= 2) {
+          themes.push("Seleccionaste repetidamente rutas híbridas, lo que indica preferencia por cambios por etapas y experimentación controlada.");
+        }
+
+        summaryText.textContent = profile;
+        themeBullets.innerHTML = "";
+        themes.forEach((item) => {
+          const p = document.createElement("p");
+          p.textContent = `• ${item}`;
+          themeBullets.appendChild(p);
+        });
+      }
+
+      nextBtn.addEventListener("click", () => {
+        currentIndex += 1;
+        if (currentIndex < scenarios.length) {
+          renderScenario();
+          return;
+        }
+
+        card.classList.add("hidden");
+        summaryCard.classList.remove("hidden");
+        generateProfile();
+      });
+
+      restartBtn.addEventListener("click", () => {
+        currentIndex = 0;
+        selectedTrends = [];
+        summaryCard.classList.add("hidden");
+        card.classList.remove("hidden");
+        renderScenario();
+      });
+
+      renderScenario();
+    </script>
+  </body>
+</html>
