@@ -58,172 +58,172 @@
     <script>
       const scenarios = [
         {
-          title: "Inherited Process vs. Open Experiment",
-          prompt: "You inherit a team with a trusted delivery process that has produced steady outcomes for years, but competitors are iterating faster.",
+          title: "Proceso heredado vs. experimento abierto",
+          prompt: "Heredas un equipo con un proceso de entrega confiable que ha dado resultados estables durante años, pero la competencia está iterando más rápido.",
           options: [
             {
-              text: "Preserve the current process and optimize bottlenecks incrementally to protect quality and predictability.",
+              text: "Conservar el proceso actual y optimizar cuellos de botella de forma incremental para proteger la calidad y la previsibilidad.",
               stance: "stability",
-              rationale: "This protects institutional reliability and client trust while limiting execution volatility. It favors controlled improvement over disruptive experimentation."
+              rationale: "Esto protege la confiabilidad institucional y la confianza del cliente, al tiempo que limita la volatilidad de la ejecución. Favorece la mejora controlada sobre la experimentación disruptiva."
             },
             {
-              text: "Launch a time-boxed pilot with a new delivery model, accepting short-term inefficiencies to learn faster.",
+              text: "Lanzar un piloto con tiempo acotado y un nuevo modelo de entrega, aceptando ineficiencias de corto plazo para aprender más rápido.",
               stance: "growth",
-              rationale: "This approach values adaptive capacity and treats temporary performance dips as data for long-term competitiveness."
+              rationale: "Este enfoque valora la capacidad de adaptación y trata las caídas temporales de desempeño como datos para la competitividad de largo plazo."
             }
           ]
         },
         {
-          title: "Executive Visibility Decision",
-          prompt: "You are invited to present a strategic recommendation outside your core domain in front of senior leadership.",
+          title: "Decisión de visibilidad ejecutiva",
+          prompt: "Te invitan a presentar una recomendación estratégica fuera de tu dominio central frente al liderazgo senior.",
           options: [
             {
-              text: "Decline and recommend a recognized domain specialist to maintain technical credibility.",
+              text: "Rechazar y recomendar a un especialista reconocido del área para mantener credibilidad técnica.",
               stance: "stability",
-              rationale: "This preserves precision and reputation by matching expertise to audience expectations. It reduces risk of overreach in a high-visibility setting."
+              rationale: "Esto preserva la precisión y la reputación al alinear la experiencia con las expectativas de la audiencia. Reduce el riesgo de sobreextensión en un entorno de alta visibilidad."
             },
             {
-              text: "Accept and frame the presentation as a cross-functional hypothesis, explicitly naming assumptions and learning gaps.",
+              text: "Aceptar y presentar la exposición como una hipótesis transversal, nombrando explícitamente supuestos y brechas de aprendizaje.",
               stance: "growth",
-              rationale: "This builds strategic range and demonstrates intellectual humility. It increases exposure risk but may accelerate interdisciplinary influence."
+              rationale: "Esto amplía el alcance estratégico y demuestra humildad intelectual. Aumenta el riesgo de exposición, pero puede acelerar la influencia interdisciplinaria."
             }
           ]
         },
         {
-          title: "Quarterly Target Pressure",
-          prompt: "Your unit can secure this quarter's target by repeating a known campaign, or test a new segment with uncertain conversion.",
+          title: "Presión por metas trimestrales",
+          prompt: "Tu unidad puede asegurar la meta de este trimestre repitiendo una campaña conocida, o probar un nuevo segmento con conversión incierta.",
           options: [
             {
-              text: "Prioritize the known campaign to protect revenue reliability and planning confidence.",
+              text: "Priorizar la campaña conocida para proteger la confiabilidad de ingresos y la confianza en la planificación.",
               stance: "stability",
-              rationale: "This aligns with fiduciary discipline and short-cycle accountability. It optimizes forecast certainty and stakeholder assurance."
+              rationale: "Esto se alinea con la disciplina fiduciaria y la rendición de cuentas de ciclo corto. Optimiza la certeza de pronóstico y la tranquilidad de los actores clave."
             },
             {
-              text: "Allocate meaningful budget to the unproven segment to gather strategic learning for future quarters.",
+              text: "Asignar un presupuesto relevante al segmento no probado para obtener aprendizaje estratégico para próximos trimestres.",
               stance: "growth",
-              rationale: "This trades near-term certainty for market discovery. It treats potential underperformance as informative investment rather than pure loss."
+              rationale: "Esto intercambia certeza de corto plazo por descubrimiento de mercado. Trata un posible bajo rendimiento como inversión informativa en lugar de pérdida pura."
             },
             {
-              text: "Split investment with predefined decision checkpoints to preserve baseline results while testing expansion hypotheses.",
+              text: "Dividir la inversión con hitos de decisión predefinidos para preservar resultados base mientras se prueban hipótesis de expansión.",
               stance: "blended",
-              rationale: "This balances risk containment and adaptive learning. It institutionalizes experimentation without abandoning operational guardrails."
+              rationale: "Esto equilibra contención de riesgo y aprendizaje adaptativo. Institucionaliza la experimentación sin abandonar los límites operativos."
             }
           ]
         },
         {
-          title: "Senior Hire or Internal Stretch",
-          prompt: "A critical function needs leadership now, and you can either recruit an established expert or appoint an internal high-potential manager.",
+          title: "Contratación senior o desarrollo interno",
+          prompt: "Una función crítica necesita liderazgo ahora, y puedes reclutar a un experto consolidado o designar a una persona interna de alto potencial.",
           options: [
             {
-              text: "Hire the external expert to reduce ramp-up risk and stabilize performance quickly.",
+              text: "Contratar al experto externo para reducir el riesgo de incorporación y estabilizar rápidamente el desempeño.",
               stance: "stability",
-              rationale: "This prioritizes immediate capability certainty and protects business continuity during high-stakes periods."
+              rationale: "Esto prioriza la certeza inmediata de capacidades y protege la continuidad del negocio en periodos de alta exigencia."
             },
             {
-              text: "Promote the internal manager and provide coaching, accepting a learning curve in exchange for long-term capability development.",
+              text: "Promover a la persona interna y brindar acompañamiento, aceptando una curva de aprendizaje a cambio del desarrollo de capacidades a largo plazo.",
               stance: "growth",
-              rationale: "This invests in internal evolution and leadership depth, while acknowledging temporary execution variability."
+              rationale: "Esto invierte en evolución interna y profundidad de liderazgo, reconociendo variaciones temporales en la ejecución."
             }
           ]
         },
         {
-          title: "Client Escalation Framing",
-          prompt: "A major client reports dissatisfaction after a delivery miss caused by ambiguous requirements and internal assumptions.",
+          title: "Enfoque ante escalación de cliente",
+          prompt: "Un cliente clave reporta insatisfacción tras un incumplimiento causado por requisitos ambiguos y supuestos internos.",
           options: [
             {
-              text: "Emphasize contractual scope boundaries and corrective controls to reinforce procedural clarity.",
+              text: "Enfatizar límites de alcance contractual y controles correctivos para reforzar la claridad del proceso.",
               stance: "stability",
-              rationale: "This re-centers accountability architecture and protects professional authority through clear process governance."
+              rationale: "Esto re-centra la arquitectura de responsabilidad y protege la autoridad profesional mediante una gobernanza clara del proceso."
             },
             {
-              text: "Acknowledge your team's interpretation bias and co-design a revised discovery process with the client.",
+              text: "Reconocer el sesgo de interpretación del equipo y co-diseñar con el cliente un proceso de descubrimiento revisado.",
               stance: "growth",
-              rationale: "This stance uses vulnerability to rebuild trust and improve future collaboration systems, despite short-term reputational discomfort."
+              rationale: "Esta postura usa la vulnerabilidad para reconstruir confianza y mejorar los sistemas de colaboración futura, pese a la incomodidad reputacional de corto plazo."
             }
           ]
         },
         {
-          title: "Innovation Agenda Choice",
-          prompt: "You can sponsor only one initiative this year: modernizing proven systems or funding exploratory prototypes.",
+          title: "Elección de agenda de innovación",
+          prompt: "Solo puedes patrocinar una iniciativa este año: modernizar sistemas probados o financiar prototipos exploratorios.",
           options: [
             {
-              text: "Modernize core systems to improve resilience, speed, and compliance in known workflows.",
+              text: "Modernizar sistemas centrales para mejorar resiliencia, velocidad y cumplimiento en flujos de trabajo conocidos.",
               stance: "stability",
-              rationale: "This secures foundational performance and reduces operational drag where value pathways are already validated."
+              rationale: "Esto asegura el desempeño base y reduce fricciones operativas donde las rutas de valor ya están validadas."
             },
             {
-              text: "Fund exploratory prototypes that may fail but could redefine future service models.",
+              text: "Financiar prototipos exploratorios que pueden fallar, pero podrían redefinir futuros modelos de servicio.",
               stance: "growth",
-              rationale: "This positions the organization for directional shifts and treats uncertain outcomes as strategic intelligence."
+              rationale: "Esto posiciona a la organización para cambios de dirección y trata resultados inciertos como inteligencia estratégica."
             }
           ]
         },
         {
-          title: "Performance Review Narrative",
-          prompt: "During your review, you're asked to describe a project that did not meet expectations.",
+          title: "Narrativa de evaluación de desempeño",
+          prompt: "Durante tu evaluación, te piden describir un proyecto que no cumplió las expectativas.",
           options: [
             {
-              text: "Highlight the risks you mitigated and the stable outcomes you preserved despite setbacks.",
+              text: "Destacar los riesgos que mitigaste y los resultados estables que preservaste pese a contratiempos.",
               stance: "stability",
-              rationale: "This frames leadership through reliability under pressure and emphasizes stewardship of existing commitments."
+              rationale: "Esto enmarca el liderazgo desde la confiabilidad bajo presión y enfatiza la gestión de compromisos existentes."
             },
             {
-              text: "Detail the flawed assumptions, what you learned, and how those insights changed your operating model.",
+              text: "Detallar los supuestos fallidos, lo que aprendiste y cómo esos hallazgos cambiaron tu modelo de operación.",
               stance: "growth",
-              rationale: "This demonstrates reflective practice and adaptation, signaling long-term developmental leadership over image protection."
+              rationale: "Esto demuestra práctica reflexiva y adaptación, señalando liderazgo de desarrollo a largo plazo por encima de la protección de imagen."
             }
           ]
         },
         {
-          title: "Public Expertise Positioning",
-          prompt: "Your industry network expects strong certainty in public commentary, but your data is still emerging.",
+          title: "Posicionamiento de expertise público",
+          prompt: "Tu red profesional espera alta certeza en comentarios públicos, pero tus datos aún están en desarrollo.",
           options: [
             {
-              text: "Publish only what is fully validated to maintain authority and minimize interpretive risk.",
+              text: "Publicar solo lo que esté totalmente validado para mantener autoridad y minimizar riesgo de interpretación.",
               stance: "stability",
-              rationale: "This safeguards credibility through evidence discipline and reduces exposure to premature conclusions."
+              rationale: "Esto resguarda la credibilidad mediante disciplina de evidencia y reduce la exposición a conclusiones prematuras."
             },
             {
-              text: "Share provisional insights with clear uncertainty boundaries and invite peer critique.",
+              text: "Compartir hallazgos provisionales con límites claros de incertidumbre e invitar crítica de pares.",
               stance: "growth",
-              rationale: "This accelerates collective learning and invites challenge, accepting that openness can temporarily soften perceived certainty."
+              rationale: "Esto acelera el aprendizaje colectivo e invita el contraste, aceptando que la apertura puede suavizar temporalmente la certeza percibida."
             }
           ]
         },
         {
-          title: "Team Capability Strategy",
-          prompt: "A high-performing team resists new tooling because current methods are efficient and familiar.",
+          title: "Estrategia de capacidades del equipo",
+          prompt: "Un equipo de alto desempeño se resiste a nuevas herramientas porque los métodos actuales son eficientes y familiares.",
           options: [
             {
-              text: "Protect existing methods and focus on throughput goals tied to known workflows.",
+              text: "Proteger métodos existentes y enfocarse en metas de productividad ligadas a flujos de trabajo conocidos.",
               stance: "stability",
-              rationale: "This preserves momentum and avoids productivity disruption where present execution is reliable."
+              rationale: "Esto preserva el ritmo y evita disrupciones de productividad donde la ejecución actual es confiable."
             },
             {
-              text: "Introduce structured upskilling cycles, accepting temporary slowdown to increase future adaptability.",
+              text: "Introducir ciclos estructurados de actualización de habilidades, aceptando una desaceleración temporal para aumentar la adaptabilidad futura.",
               stance: "growth",
-              rationale: "This prioritizes learning elasticity and future-readiness, even when short-term metrics may soften."
+              rationale: "Esto prioriza la elasticidad de aprendizaje y la preparación futura, incluso cuando los indicadores de corto plazo se debiliten."
             },
             {
-              text: "Phase in tooling for one sub-team first, using comparative data before wider adoption.",
+              text: "Implementar las herramientas primero en un subequipo, usando datos comparativos antes de una adopción amplia.",
               stance: "blended",
-              rationale: "This creates evidence-led transition pathways that respect both present efficiency and evolving capability needs."
+              rationale: "Esto crea rutas de transición guiadas por evidencia que respetan tanto la eficiencia actual como las necesidades de capacidad en evolución."
             }
           ]
         },
         {
-          title: "Personal Leadership Bet",
-          prompt: "You can take a familiar role with high confidence or pursue a broader role where some competencies are still developing.",
+          title: "Apuesta personal de liderazgo",
+          prompt: "Puedes tomar un rol familiar con alta confianza o asumir un rol más amplio donde algunas competencias aún están en desarrollo.",
           options: [
             {
-              text: "Choose the familiar role to maximize immediate impact and maintain strong performance continuity.",
+              text: "Elegir el rol familiar para maximizar impacto inmediato y mantener una continuidad sólida de desempeño.",
               stance: "stability",
-              rationale: "This choice favors dependable contribution and reputation reinforcement through established mastery."
+              rationale: "Esta elección favorece una contribución confiable y el refuerzo de reputación a través del dominio ya establecido."
             },
             {
-              text: "Take the broader role and build missing competencies in real time with mentorship support.",
+              text: "Tomar el rol más amplio y construir las competencias faltantes en tiempo real con apoyo de mentoría.",
               stance: "growth",
-              rationale: "This choice emphasizes trajectory expansion and deliberate skill acquisition while accepting exposure to initial underperformance."
+              rationale: "Esta elección enfatiza la expansión de trayectoria y la adquisición deliberada de habilidades, aceptando exposición a un rendimiento inicial inferior."
             }
           ]
         }
