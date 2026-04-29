@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Professional Mindset Reflection Tool</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              slatebase: "#0f172a",
+              slatepanel: "#1e293b",
+              tealsoft: "#14b8a6",
+              graysoft: "#94a3b8"
+            }
+          }
+        }
+      };
+    </script>
+  </head>
+  <body class="min-h-screen bg-slatebase text-slate-100">
+    <main class="mx-auto max-w-4xl px-4 py-10">
+      <header class="mb-8 rounded-2xl bg-slatepanel/80 p-6 shadow-lg ring-1 ring-slate-700">
+        <h1 class="text-2xl font-semibold tracking-tight sm:text-3xl">Professional Mindset Reflection Tool</h1>
+        <p class="mt-3 text-sm text-graysoft sm:text-base">
+          Explore your professional decision tendencies in a neutral space. Each option reflects a valid strategy; the analysis is informational, not corrective.
+        </p>
+      </header>
+
+      <section id="card" class="rounded-2xl bg-slatepanel/90 p-6 shadow-xl ring-1 ring-slate-700">
+        <p id="stepLabel" class="text-xs font-medium uppercase tracking-[0.2em] text-teal-300"></p>
+        <h2 id="scenarioTitle" class="mt-2 text-xl font-semibold"></h2>
+        <p id="scenarioText" class="mt-3 leading-relaxed text-slate-200"></p>
+
+        <div id="optionContainer" class="mt-6 grid gap-3"></div>
+
+        <div id="analysisPanel" class="mt-6 hidden rounded-xl border border-teal-700/60 bg-slate-800/70 p-4">
+          <h3 class="text-sm font-semibold uppercase tracking-wider text-teal-300">Perspective Analysis</h3>
+          <p id="analysisText" class="mt-2 text-slate-200"></p>
+          <button id="nextBtn" class="mt-4 rounded-lg bg-teal-600 px-4 py-2 font-medium text-slate-950 transition hover:bg-teal-500">
+            Next Scenario
+          </button>
+        </div>
+      </section>
+
+      <section id="summaryCard" class="mt-8 hidden rounded-2xl bg-slatepanel/90 p-6 shadow-xl ring-1 ring-slate-700">
+        <h2 class="text-2xl font-semibold">Mindset Profile</h2>
+        <p id="summaryText" class="mt-3 leading-relaxed text-slate-200"></p>
+        <div id="themeBullets" class="mt-4 space-y-2 text-slate-300"></div>
+        <button id="restartBtn" class="mt-6 rounded-lg bg-teal-600 px-4 py-2 font-medium text-slate-950 transition hover:bg-teal-500">
+          Reflect Again
+        </button>
+      </section>
+    </main>
+
+    <script>
+      const scenarios = [
+        {
+          title: "Inherited Process vs. Open Experiment",
+          prompt: "You inherit a team with a trusted delivery process that has produced steady outcomes for years, but competitors are iterating faster.",
+          options: [
+            {
+              text: "Preserve the current process and optimize bottlenecks incrementally to protect quality and predictability.",
+              stance: "stability",
+              rationale: "This protects institutional reliability and client trust while limiting execution volatility. It favors controlled improvement over disruptive experimentation."
+            },
+            {
+              text: "Launch a time-boxed pilot with a new delivery model, accepting short-term inefficiencies to learn faster.",
+              stance: "growth",
+              rationale: "This approach values adaptive capacity and treats temporary performance dips as data for long-term competitiveness."
+            }
+          ]
+        },
+        {
+          title: "Executive Visibility Decision",
+          prompt: "You are invited to present a strategic recommendation outside your core domain in front of senior leadership.",
+          options: [
+            {
+              text: "Decline and recommend a recognized domain specialist to maintain technical credibility.",
+              stance: "stability",
+              rationale: "This preserves precision and reputation by matching expertise to audience expectations. It reduces risk of overreach in a high-visibility setting."
+            },
+            {
+              text: "Accept and frame the presentation as a cross-functional hypothesis, explicitly naming assumptions and learning gaps.",
+              stance: "growth",
+              rationale: "This builds strategic range and demonstrates intellectual humility. It increases exposure risk but may accelerate interdisciplinary influence."
+            }
+          ]
+        },
+        {
+          title: "Quarterly Target Pressure",
+          prompt: "Your unit can secure this quarter's target by repeating a known campaign, or test a new segment with uncertain conversion.",
+          options: [
+            {
+              text: "Prioritize the known campaign to protect revenue reliability and planning confidence.",
+              stance: "stability",
+              rationale: "This aligns with fiduciary discipline and short-cycle accountability. It optimizes forecast certainty and stakeholder assurance."
+            },
+            {
+              text: "Allocate meaningful budget to the unproven segment to gather strategic learning for future quarters.",
+              stance: "growth",
+              rationale: "This trades near-term certainty for market discovery. It treats potential underperformance as informative investment rather than pure loss."
+            },
+            {
+              text: "Split investment with predefined decision checkpoints to preserve baseline results while testing expansion hypotheses.",
+              stance: "blended",
+              rationale: "This balances risk containment and adaptive learning. It institutionalizes experimentation without abandoning operational guardrails."
+            }
+          ]
+        },
+        {
+          title: "Senior Hire or Internal Stretch",
+          prompt: "A critical function needs leadership now, and you can either recruit an established expert or appoint an internal high-potential manager.",
+          options: [
+            {
+              text: "Hire the external expert to reduce ramp-up risk and stabilize performance quickly.",
+              stance: "stability",
+              rationale: "This prioritizes immediate capability certainty and protects business continuity during high-stakes periods."
+            },
+            {
+              text: "Promote the internal manager and provide coaching, accepting a learning curve in exchange for long-term capability development.",
+              stance: "growth",
+              rationale: "This invests in internal evolution and leadership depth, while acknowledging temporary execution variability."
+            }
+          ]
+        },
+        {
+          title: "Client Escalation Framing",
+          prompt: "A major client reports dissatisfaction after a delivery miss caused by ambiguous requirements and internal assumptions.",
+          options: [
+            {
+              text: "Emphasize contractual scope boundaries and corrective controls to reinforce procedural clarity.",
+              stance: "stability",
+              rationale: "This re-centers accountability architecture and protects professional authority through clear process governance."
+            },
+            {
+              text: "Acknowledge your team's interpretation bias and co-design a revised discovery process with the client.",
+              stance: "growth",
+              rationale: "This stance uses vulnerability to rebuild trust and improve future collaboration systems, despite short-term reputational discomfort."
+            }
+          ]
+        },
+        {
+          title: "Innovation Agenda Choice",
+          prompt: "You can sponsor only one initiative this year: modernizing proven systems or funding exploratory prototypes.",
+          options: [
+            {
+              text: "Modernize core systems to improve resilience, speed, and compliance in known workflows.",
+              stance: "stability",
+              rationale: "This secures foundational performance and reduces operational drag where value pathways are already validated."
+            },
+            {
+              text: "Fund exploratory prototypes that may fail but could redefine future service models.",
+              stance: "growth",
+              rationale: "This positions the organization for directional shifts and treats uncertain outcomes as strategic intelligence."
+            }
+          ]
+        },
+        {
+          title: "Performance Review Narrative",
+          prompt: "During your review, you're asked to describe a project that did not meet expectations.",
+          options: [
+            {
+              text: "Highlight the risks you mitigated and the stable outcomes you preserved despite setbacks.",
+              stance: "stability",
+              rationale: "This frames leadership through reliability under pressure and emphasizes stewardship of existing commitments."
+            },
+            {
+              text: "Detail the flawed assumptions, what you learned, and how those insights changed your operating model.",
+              stance: "growth",
+              rationale: "This demonstrates reflective practice and adaptation, signaling long-term developmental leadership over image protection."
+            }
+          ]
+        },
+        {
+          title: "Public Expertise Positioning",
+          prompt: "Your industry network expects strong certainty in public commentary, but your data is still emerging.",
+          options: [
+            {
+              text: "Publish only what is fully validated to maintain authority and minimize interpretive risk.",
+              stance: "stability",
+              rationale: "This safeguards credibility through evidence discipline and reduces exposure to premature conclusions."
+            },
+            {
+              text: "Share provisional insights with clear uncertainty boundaries and invite peer critique.",
+              stance: "growth",
+              rationale: "This accelerates collective learning and invites challenge, accepting that openness can temporarily soften perceived certainty."
+            }
+          ]
+        },
+        {
+          title: "Team Capability Strategy",
+          prompt: "A high-performing team resists new tooling because current methods are efficient and familiar.",
+          options: [
+            {
+              text: "Protect existing methods and focus on throughput goals tied to known workflows.",
+              stance: "stability",
+              rationale: "This preserves momentum and avoids productivity disruption where present execution is reliable."
+            },
+            {
+              text: "Introduce structured upskilling cycles, accepting temporary slowdown to increase future adaptability.",
+              stance: "growth",
+              rationale: "This prioritizes learning elasticity and future-readiness, even when short-term metrics may soften."
+            },
+            {
+              text: "Phase in tooling for one sub-team first, using comparative data before wider adoption.",
+              stance: "blended",
+              rationale: "This creates evidence-led transition pathways that respect both present efficiency and evolving capability needs."
+            }
+          ]
+        },
+        {
+          title: "Personal Leadership Bet",
+          prompt: "You can take a familiar role with high confidence or pursue a broader role where some competencies are still developing.",
+          options: [
+            {
+              text: "Choose the familiar role to maximize immediate impact and maintain strong performance continuity.",
+              stance: "stability",
+              rationale: "This choice favors dependable contribution and reputation reinforcement through established mastery."
+            },
+            {
+              text: "Take the broader role and build missing competencies in real time with mentorship support.",
+              stance: "growth",
+              rationale: "This choice emphasizes trajectory expansion and deliberate skill acquisition while accepting exposure to initial underperformance."
+            }
+          ]
+        }
+      ];
+
+      const stepLabel = document.getElementById("stepLabel");
+      const scenarioTitle = document.getElementById("scenarioTitle");
+      const scenarioText = document.getElementById("scenarioText");
+      const optionContainer = document.getElementById("optionContainer");
+      const analysisPanel = document.getElementById("analysisPanel");
+      const analysisText = document.getElementById("analysisText");
+      const nextBtn = document.getElementById("nextBtn");
+      const summaryCard = document.getElementById("summaryCard");
+      const summaryText = document.getElementById("summaryText");
+      const themeBullets = document.getElementById("themeBullets");
+      const restartBtn = document.getElementById("restartBtn");
+      const card = document.getElementById("card");
+
+      let currentIndex = 0;
+      let selectedTrends = [];
+
+      function renderScenario() {
+        const current = scenarios[currentIndex];
+        stepLabel.textContent = `Scenario ${currentIndex + 1} of ${scenarios.length}`;
+        scenarioTitle.textContent = current.title;
+        scenarioText.textContent = current.prompt;
+        optionContainer.innerHTML = "";
+        analysisPanel.classList.add("hidden");
+
+        current.options.forEach((option) => {
+          const btn = document.createElement("button");
+          btn.className =
+            "w-full rounded-xl border border-slate-600 bg-slate-800/70 p-4 text-left text-slate-100 transition hover:border-teal-400 hover:bg-slate-700/80";
+          btn.textContent = option.text;
+          btn.addEventListener("click", () => handleSelection(option));
+          optionContainer.appendChild(btn);
+        });
+      }
+
+      function handleSelection(option) {
+        selectedTrends.push(option.stance);
+        analysisText.textContent = option.rationale;
+        analysisPanel.classList.remove("hidden");
+        optionContainer.querySelectorAll("button").forEach((button) => {
+          button.disabled = true;
+          button.classList.add("opacity-60");
+        });
+      }
+
+      function generateProfile() {
+        const stability = selectedTrends.filter((v) => v === "stability").length;
+        const growth = selectedTrends.filter((v) => v === "growth").length;
+        const blended = selectedTrends.filter((v) => v === "blended").length;
+
+        const themes = [];
+        let profile = "";
+
+        if (stability > growth + 1) {
+          profile = "You currently prioritize operational stability, trusted expertise, and risk-managed execution. This can be highly effective in environments where reliability and stakeholder confidence are central.";
+          themes.push("You appear to value predictability, governance, and the protection of proven systems.");
+          themes.push("Your reflection suggests a strong commitment to preserving delivery quality under uncertainty.");
+        } else if (growth > stability + 1) {
+          profile = "You are in a phase of growth exploration, favoring adaptive learning and long-horizon evolution. This orientation can unlock new capabilities when conditions reward experimentation.";
+          themes.push("You appear comfortable with temporary ambiguity in service of broader capability development.");
+          themes.push("Your reflection suggests you use setbacks as information rather than identity threats.");
+        } else {
+          profile = "You currently show a balanced posture between stability and evolution, toggling between reliability and experimentation based on context.";
+          themes.push("You appear to calibrate decisions by both immediate operational demands and future adaptability.");
+          themes.push("Your reflection suggests situational flexibility rather than a fixed professional stance.");
+        }
+
+        if (blended >= 2) {
+          themes.push("You repeatedly selected hybrid pathways, indicating preference for staged change and controlled experimentation.");
+        }
+
+        summaryText.textContent = profile;
+        themeBullets.innerHTML = "";
+        themes.forEach((item) => {
+          const p = document.createElement("p");
+          p.textContent = `• ${item}`;
+          themeBullets.appendChild(p);
+        });
+      }
+
+      nextBtn.addEventListener("click", () => {
+        currentIndex += 1;
+        if (currentIndex < scenarios.length) {
+          renderScenario();
+          return;
+        }
+
+        card.classList.add("hidden");
+        summaryCard.classList.remove("hidden");
+        generateProfile();
+      });
+
+      restartBtn.addEventListener("click", () => {
+        currentIndex = 0;
+        selectedTrends = [];
+        summaryCard.classList.add("hidden");
+        card.classList.remove("hidden");
+        renderScenario();
+      });
+
+      renderScenario();
+    </script>
+  </body>
+</html>
